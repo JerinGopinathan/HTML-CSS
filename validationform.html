@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Form with Validation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .error-message {
+            color: red;
+            font-size: 12px;
+            margin-top: -10px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body bgcolor="	#FFCCCC">
+    <h1>Web Form with Validation</h1>
+    <form id="myForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required>
+        <div class="error-message" id="nameError"></div>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+        <div class="error-message" id="emailError"></div>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <div class="error-message" id="passwordError"></div>
+
+        <label>Gender:</label>
+        <input type="radio" id="male" name="gender" value="male" required>
+        <label for="male">Male</label>
+        <input type="radio" id="female" name="gender" value="female" required>
+        <label for="female">Female</label>
+        <div class="error-message" id="genderError"></div>
+
+        <label for="country">Country:</label>
+        <select id="country" name="country" required>
+            <option value="">Select Country</option>
+            <option value="INDIA">INDIA</option>
+            <option value="USA">USA</option>
+            <option value="KOREA">KOREA</option>
+            <option value="UK">UK</option>
+            <option value="CANADA">CANADA</option>
+        </select>
+        <label>
+            <input type="checkbox" id="subscribe" name="subscribe">
+            Subscribe to newsletter
+        </label>
+        <button type="submit">Submit</button>
+    </form>
+    <script>
+        const form = document.getElementById('myForm');
+        form.addEventListener('submit', function(event) {
+            event.preventDefault();
+            if (validateForm()) {
+                // Form submission logic can go here
+                alert('Form submitted successfully!');
+                form.reset();
+            }
+        });
+        function validateForm() {
+            let valid = true;
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const gender = document.querySelector('input[name="gender"]:checked');
+            const country = document.getElementById('country');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            const genderError = document.getElementById('genderError');
+            const countryError = document.getElementById('countryError');
+            nameError.textContent = '';
+            emailError.textContent = '';
+            passwordError.textContent = '';
+            genderError.textContent = '';
+            countryError.textContent = '';
+            if (name.value.trim() === '') {
+                nameError.textContent = 'Name is required';
+                valid = false;
+            }
+            if (email.value.trim() === '') {
+                emailError.textContent = 'Email is required';
+                valid = false;
+            } else if (!isValidEmail(email.value.trim())) {
+                emailError.textContent = 'Invalid email format';
+                valid = false;
+            }
+            if (password.value === '') {
+                passwordError.textContent = 'Password is required';
+                valid = false;
+            } else if (password.value.length < 6) {
+                passwordError.textContent = 'Password must be at least 6 characters long';
+                valid = false;
+            }
+            if (!gender) {
+                genderError.textContent = 'Gender is required';
+                valid = false;
+            }
+
+            if (country.value === '') {
+                countryError.textContent = 'Please select a country';
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        function isValidEmail(email) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return emailRegex.test(email);
+        }
+    </script>
+</body>
+</html>
